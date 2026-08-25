@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Consulta de pedidos | Happy Burger</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/estilos.css') }}"
+    >
+</head>
+<body>
+    <main class="contenedor">
+        <section class="encabezado">
+            <span class="etiqueta">Sistema administrativo</span>
+            <h1>Happy Burger</h1>
+            <p>Consulta la información de un pedido mediante su número.</p>
+        </section>
+
+        <section class="panel">
+            <form method="POST" class="formulario">
+                <label for="numero">Número de pedido</label>
+
+                <div class="grupo-busqueda">
+                    <input
+                        type="number"
+                        id="numero"
+                        name="numero"
+                        min="1"
+                        value="{{ numero }}"
+                        placeholder="Ejemplo: 2"
+                        required
+                    >
+                    <button type="submit">Consultar pedido</button>
+                </div>
+            </form>
+
+            {% if mensaje %}
+                <div class="mensaje-error">
+                    {{ mensaje }}
+                </div>
+            {% endif %}
+
+            {% if pedido %}
+                <article class="pedido">
+                    <div class="pedido-superior">
+                        <div>
+                            <span class="leyenda">Pedido</span>
+                            <h2>#{{ pedido['pedido'] }}</h2>
+                        </div>
+
+                        <span class="estado {{ pedido['estado']|lower }}">
+                            {{ pedido['estado'] }}
+                        </span>
+                    </div>
+
+                    <div class="datos">
+                        <div class="dato dato-amplio">
+                            <span>Cliente</span>
+                            <strong>{{ pedido['cliente'] }}</strong>
+                        </div>
+
+                        <div class="dato dato-amplio">
+                            <span>Producto</span>
+                            <strong>{{ pedido['producto'] }}</strong>
+                        </div>
+
+                        <div class="dato">
+                            <span>Precio unitario</span>
+                            <strong>${{ "%.2f"|format(pedido['precio']) }}</strong>
+                        </div>
+
+                        <div class="dato">
+                            <span>Cantidad</span>
+                            <strong>{{ pedido['cantidad'] }}</strong>
+                        </div>
+
+                        <div class="dato total">
+                            <span>Total</span>
+                            <strong>${{ "%.2f"|format(pedido['total']) }}</strong>
+                        </div>
+
+                        <div class="dato">
+                            <span>Fecha de registro</span>
+                            <strong>{{ pedido['fecha_creacion'] }}</strong>
+                        </div>
+                    </div>
+                </article>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>
